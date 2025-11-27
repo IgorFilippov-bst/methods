@@ -1,0 +1,30 @@
+# Класс узла (как в методичке)
+class TreeNode:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+def count_leaves(root):
+    # Базовый случай 1: Если узел пустой (дошли до конца ветки)
+    if root is None:
+        return 0
+    
+    # Базовый случай 2: Если узел - ЛИСТ (нет ни левого, ни правого потомка)
+    if root.left is None and root.right is None:
+        return 1
+    
+    # Рекурсивный случай: 
+    # Складываем листья слева и листья справа
+    return count_leaves(root.left) + count_leaves(root.right)
+
+# Тестирование (Создание дерева: A(B(D), C(E, F)))
+# Листья: D, E, F. Ожидаемый результат: 3
+root = TreeNode('A')
+root.left = TreeNode('B')
+root.right = TreeNode('C')
+root.left.left = TreeNode('D') # Лист
+root.right.left = TreeNode('E') # Лист
+root.right.right = TreeNode('F') # Лист
+
+print("Количество листьев в дереве: " + str(count_leaves(root)))
