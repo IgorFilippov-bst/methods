@@ -1,0 +1,54 @@
+def is_safe(queens, row, col):
+    """Проверяет, безопасно ли queens[row] = col от предыдущих ферзей."""
+    # Мы проверяем только предыдущие строки (i < row), потому что в следующих ферзей еще нет
+    for i in range(row):
+        # queens[i] - столбец, в котором стоит ферзь в строке i
+        # 1. Проверка столбца: queens[i] == col
+        # 2. Проверка диагоналей: abs(queens[i] - col) == abs(i - row)
+        if queens[i] == col or abs(queens[i] - col) == abs(i - row):
+            return False
+    return True
+
+def solve_n_queens(row, n, queens, solutions):
+    # Базовый случай: все N ферзей расставлены
+    if row == n:
+        solutions.append(queens[:])
+        return
+    
+    # Перебор: пробуем поставить ферзя в каждый столбец (col) текущей строки (row)
+    for col in range(n):
+        if is_safe(queens, row, col):
+            # Шаг вперед: делаем выбор
+            queens[row] = col 
+            
+            # Рекурсивный вызов для следующей строки
+            solve_n_queens(row + 1, n, queens, solutions)
+            
+            # Откат (Backtrack): отменяем выбор, чтобы попробовать другой столбец
+            # Мы ставим -1, чтобы показать, что место в этой строке свободно
+            queens[row] = -1
+
+def print_solution(queens):
+    """Выводит решение на доску (Q - ферзь, . - пусто)"""
+    n = len(queens)
+    for i in range(n):
+        row_output = ['Q' if queens[i] == j else '.' for j in range(n)]
+        print(' '.join(row_output))
+    print()
+
+# Тестирование для N=8
+N = 8
+# Массив queens хранит столбец для каждой строки: queens[i] = j означает, что 
+# в строке i ферзь стоит в столбце j. Изначально все -1.
+queens = [-1] * N
+solutions = []
+solve_n_queens(0, N, queens, solutions)
+
+print(f"*** Задача о {N} ферзях ***")
+print(f"Найдено решений: {len(solutions)}")
+# Для N=8 должно быть 92 решения.
+
+# Выводим только первое решение для экономии места
+if solutions:
+    print("\nПервое найденное решение:")
+    print_solution(solutions[0])
