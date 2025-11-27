@@ -1,0 +1,22 @@
+def generate_binary_strings(n, current_string=""):
+    # Базовый случай: строка достигла нужной длины
+    if len(current_string) == n:
+        print(current_string)
+        return
+    
+    # Рекурсивный случай (Перебор вариантов):
+    
+    # 1. Пробуем поставить '0' на текущую позицию
+    # Делаем выбор: '0'
+    generate_binary_strings(n, current_string + '0')
+    
+    # 2. Пробуем поставить '1' на текущую позицию
+    # Делаем выбор: '1'
+    # *Тут неявный ОТКАТ (backtrack), потому что мы просто делаем новый вызов, 
+    # старая строка не меняется.*
+    generate_binary_strings(n, current_string + '1')
+
+# Тестирование
+length = 3
+print(f"Все бинарные строки длины {length}:")
+generate_binary_strings(length)
